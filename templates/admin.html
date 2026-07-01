@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hot Crust Cafe Admin</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        color: #2c1a10;
+        background: #fffaf5;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .admin-shell {
+        min-height: 100vh;
+        padding: 32px 5%;
+      }
+
+      .topbar {
+        max-width: 1180px;
+        margin: 0 auto 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #4a2c2a;
+      }
+
+      .brand span {
+        color: #c57f2e;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .button,
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.78rem 1.2rem;
+        background: #e2a13c;
+        color: #2c1a10;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .button.secondary,
+      button.secondary {
+        background: #4a2c2a;
+        color: #fffaf5;
+      }
+
+      .layout {
+        max-width: 1180px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 22px;
+        align-items: start;
+      }
+
+      .panel {
+        background: #ffffff;
+        border: 1px solid rgba(74, 44, 42, 0.12);
+        border-radius: 8px;
+        box-shadow: 0 18px 35px rgba(74, 44, 42, 0.08);
+        padding: 24px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        color: #4a2c2a;
+      }
+
+      h1,
+      h2 {
+        font-family: "Playfair Display", serif;
+      }
+
+      .muted {
+        color: #6b4f3a;
+        line-height: 1.6;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+      }
+
+      .stat {
+        border: 1px solid rgba(226, 161, 60, 0.35);
+        border-radius: 8px;
+        padding: 16px;
+        background: #fff5eb;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 2rem;
+        color: #c57f2e;
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 7px;
+        font-size: 0.82rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #6b4f3a;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        border: 1px solid rgba(74, 44, 42, 0.2);
+        border-radius: 8px;
+        padding: 0.88rem 0.95rem;
+        font: inherit;
+        color: #2c1a10;
+        background: #fffaf5;
+      }
+
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+
+      .flash {
+        max-width: 1180px;
+        margin: 0 auto 18px;
+        padding: 13px 16px;
+        border-radius: 8px;
+        font-weight: 700;
+      }
+
+      .flash.success {
+        background: #ecf8ee;
+        color: #22612d;
+      }
+
+      .flash.error {
+        background: #fff0ee;
+        color: #9f241a;
+      }
+
+      .menu-list {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .menu-row {
+        display: grid;
+        grid-template-columns: 96px 1fr auto;
+        gap: 16px;
+        align-items: center;
+        border: 1px solid rgba(74, 44, 42, 0.1);
+        border-radius: 8px;
+        padding: 12px;
+        background: #fffaf5;
+      }
+
+      .menu-row img {
+        width: 96px;
+        height: 76px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .menu-row p {
+        margin: 6px 0 0;
+        color: #6b4f3a;
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      .price {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 0.2rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(226, 161, 60, 0.14);
+        color: #c57f2e;
+        font-weight: 800;
+      }
+
+      .delete-button {
+        background: #fff0ee;
+        color: #9f241a;
+        padding: 0.65rem 0.9rem;
+      }
+
+      .login-wrap {
+        max-width: 430px;
+        margin: 80px auto 0;
+      }
+
+      @media (max-width: 820px) {
+        .topbar,
+        .layout,
+        .menu-row {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          align-items: flex-start;
+        }
+
+        .menu-row img {
+          width: 100%;
+          height: 190px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="admin-shell">
+      <header class="topbar">
+        <div>
+          <div class="brand">Hot Crust <span>Cafe</span></div>
+          <p class="muted">
+            Admin dashboard for keeping the website menu fresh.
+          </p>
+        </div>
+        <div class="top-actions">
+          <a class="button" href="{{ url_for('home') }}">View Website</a>
+          {% if logged_in %}
+          <form action="{{ url_for('logout') }}" method="post">
+            <button class="secondary" type="submit">Logout</button>
+          </form>
+          {% endif %}
+        </div>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %} {% if not logged_in %}
+      <section class="panel login-wrap">
+        <h1>Admin Login</h1>
+        <p class="muted">
+          Sign in to add new food items and upload menu images.
+        </p>
+        <form action="{{ url_for('admin') }}" method="post">
+          <input type="hidden" name="action" value="login" />
+          <label>
+            Username
+            <input name="username" autocomplete="username" required />
+          </label>
+          <label>
+            Password
+            <input
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+      </section>
+      {% else %}
+      <section class="layout">
+        <div class="panel">
+          <h1>Dashboard</h1>
+          <p class="muted">
+            Add food with a price, description, and image. New items appear
+            immediately on the homepage menu.
+          </p>
+          <div class="stats">
+            <div class="stat">
+              <strong
+                >{{ (menu_items|length + (static_images|length if static_images
+                is defined else 0)) }}</strong
+              >
+              Menu items
+            </div>
+            <div class="stat">
+              <strong>8MB</strong>
+              Max image
+            </div>
+          </div>
+
+          <h2>Add Food</h2>
+          <form
+            action="{{ url_for('add_menu_item') }}"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <label>
+              Food name
+              <input name="name" placeholder="Chicken Alfredo Pasta" required />
+            </label>
+            <label>
+              Description
+              <textarea
+                name="description"
+                placeholder="Creamy pasta with grilled chicken and house seasoning."
+                required
+              ></textarea>
+            </label>
+            <label>
+              Price
+              <input name="price" placeholder="₦6,500" required />
+            </label>
+            <label>
+              Food image
+              <input name="image" type="file" accept="image/*" required />
+            </label>
+            <button type="submit">Add To Menu</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <form
+            action="{{ url_for('import_static_images') }}"
+            method="post"
+            style="margin-bottom: 12px"
+          >
+            <button class="button" type="submit">Import Static Images</button>
+          </form>
+          <h2>Current Website Menu</h2>
+          <p class="muted">
+            These are the food cards currently showing on the homepage.
+          </p>
+          <div class="menu-list">
+            {% if menu_items %} {% for item in menu_items %}
+            <article class="menu-row">
+              <img src="{{ item.image }}" alt="{{ item.name }}" />
+              <div>
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.description }}</p>
+                <span class="price">{{ item.price }}</span>
+              </div>
+              <form
+                action="{{ url_for('delete_menu_item', item_id=item.id) }}"
+                method="post"
+              >
+                <button class="delete-button" type="submit">Delete</button>
+              </form>
+
+              <details style="margin-top: 8px">
+                <summary
+                  style="cursor: pointer; font-weight: 700; color: #6b4f3a"
+                >
+                  Edit
+                </summary>
+                <form
+                  action="{{ url_for('edit_menu_item', item_id=item.id) }}"
+                  method="post"
+                  style="margin-top: 8px"
+                >
+                  <label>
+                    Name
+                    <input name="name" value="{{ item.name }}" required />
+                  </label>
+                  <label>
+                    Description
+                    <textarea name="description" required>
+{{ item.description }}</textarea
+                    >
+                  </label>
+                  <label>
+                    Price
+                    <input name="price" value="{{ item.price }}" required />
+                  </label>
+                  <button class="button" type="submit">Save</button>
+                </form>
+              </details>
+            </article>
+            {% endfor %} {% else %}
+            <p class="muted">
+              No menu items yet. Add the first one from the form.
+            </p>
+            {% endif %} {% if static_images %}
+            <hr
+              style="
+                border: none;
+                height: 1px;
+                background: rgba(74, 44, 42, 0.06);
+                margin: 12px 0;
+              "
+            />
+            <p class="muted" style="margin: 0 0 8px 0">
+              Static images detected in <strong>/static</strong> (these are not
+              stored in the menu JSON):
+            </p>
+            {% for s in static_images %}
+            <article class="menu-row">
+              <img src="{{ s.image }}" alt="{{ s.name }}" />
+              <div>
+                <h3>{{ s.name }}</h3>
+                <p class="muted">Image file: {{ s.id }}</p>
+                <span class="price">{{ s.price }}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <a class="button" href="{{ s.order_url }}" target="_blank"
+                  >Order</a
+                >
+                <form
+                  action="{{ url_for('delete_static_image') }}"
+                  method="post"
+                  onsubmit="return confirm('Delete {{ s.id }}?')"
+                >
+                  <input type="hidden" name="filename" value="{{ s.id }}" />
+                  <button class="delete-button" type="submit">Delete</button>
+                </form>
+              </div>
+            </article>
+            {% endfor %} {% endif %}
+          </div>
+        </div>
+      </section>
+      {% endif %}
+    </main>
+  </body>
+</html>

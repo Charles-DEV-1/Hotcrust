@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hot Crust Cafe Menu</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        color: #2c1a10;
+        background: #fffaf5;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      .page-shell {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 24px 64px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 32px;
+      }
+      .brand {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        color: #4a2c2a;
+      }
+      .brand span {
+        color: #c57f2e;
+      }
+      .intro {
+        max-width: 720px;
+        color: #6b4f3a;
+        line-height: 1.75;
+      }
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.85rem 1.4rem;
+        border-radius: 999px;
+        background: #e2a13c;
+        color: #2c1a10;
+        font-weight: 700;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
+      .card {
+        background: #ffffff;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 20px 30px rgba(74, 44, 42, 0.08);
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 38px rgba(74, 44, 42, 0.12);
+      }
+      .card img {
+        width: 100%;
+        height: 260px;
+        object-fit: cover;
+      }
+      .card-body {
+        padding: 1.8rem;
+      }
+      .product-name {
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        margin-bottom: 0.6rem;
+        color: #4a2c2a;
+      }
+      .product-price {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-bottom: 1rem;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(226, 161, 60, 0.12);
+        color: #c57f2e;
+        font-weight: 700;
+      }
+      .product-description {
+        color: #6b4f3a;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+      .order-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.95rem 1rem;
+        border-radius: 999px;
+        background: #25d366;
+        color: #0a2b1a;
+        font-size: 0.95rem;
+        font-weight: 800;
+        transition: filter 0.2s ease;
+      }
+      .order-button:hover {
+        filter: brightness(0.95);
+      }
+      .footer {
+        margin-top: 40px;
+        text-align: center;
+        color: #6b4f3a;
+      }
+      @media (max-width: 720px) {
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <div>
+          <div class="brand">Hot Crust <span>Menu</span></div>
+          <p class="intro">
+            Browse all the product images you added to the static folder. Tap
+            any card to order through WhatsApp instantly with the selected item
+            and its price.
+          </p>
+        </div>
+        <a class="nav-btn" href="/">Back to Home</a>
+      </header>
+
+      <section class="grid">
+        {# Render stored menu items first (editable via admin) #} {% if
+        menu_items %} {% for it in menu_items %}
+        <article class="card">
+          <img src="{{ it.image }}" alt="{{ it.name }}" />
+          <div class="card-body">
+            <div class="product-name">{{ it.name }}</div>
+            <div class="product-price">{{ it.price }}</div>
+            <p class="product-description">{{ it.description }}</p>
+            <a
+              class="order-button"
+              href="https://wa.me/{{ config.WHATSAPP_NUMBER|default('2349169036334') }}?text={{ ('Hello, I want to buy ' ~ it.name ~ ' for ' ~ it.price)|urlencode }}"
+              target="_blank"
+              >Order now on WhatsApp</a
+            >
+          </div>
+        </article>
+        {% endfor %} {% endif %} {# Then render discovered static/upload images
+        not already in menu_items #} {% for item in menu_images %} {% if
+        existing_image_ids is not defined or (item.id not in existing_image_ids)
+        %}
+        <article class="card">
+          <img src="{{ item.image }}" alt="{{ item.name }}" />
+          <div class="card-body">
+            <div class="product-name">{{ item.name }}</div>
+            <div class="product-price">{{ item.price }}</div>
+            <p class="product-description">Freshly added image file.</p>
+            <a
+              class="order-button"
+              href="{{ item.order_url }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Order now on WhatsApp</a
+            >
+          </div>
+        </article>
+        {% endif %} {% endfor %}
+      </section>
+
+      <footer class="footer">
+        WhatsApp orders send a preformatted message to the business owner.
+      </footer>
+    </main>
+  </body>
+</html>

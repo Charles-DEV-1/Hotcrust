@@ -1,0 +1,16 @@
+[
+  {
+    "id": "stir-fried-pasta",
+    "name": "Stir Fried Pasta",
+    "description": "Wok-tossed pasta with veggies, chicken, and signature sauce - a customer favorite, bold and satisfying.",
+    "price": "\u20a66,500",
+    "image": "https://images.pexels.com/photos/4551832/pexels-photo-4551832.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": "waffles-oreo-milkshake",
+    "name": "Waffles + Oreo Milkshake",
+    "description": "Golden crispy waffles paired with thick, creamy Oreo milkshake - absolute perfection.",
+    "price": "\u20a67,500",
+    "image": "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=800"
+  }
+]

@@ -6,10 +6,3 @@ services:
     plan: starter
     buildCommand: "pip install -r requirements.txt"
     startCommand: "gunicorn --bind 0.0.0.0:$PORT app:app"
-    envVars:
-      - key: SECRET_KEY
-        value: "change-this-hotcrust-secret"
-      - key: ADMIN_PASSWORD
-        value: "hotcrust2026"
-      - key: WHATSAPP_NUMBER
-        value: "2349169036334"

@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Hot Crust Cafe | Cozy • Waffles • Ogudu Lagos</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #fffaf5;
+        --cream: #fff5eb;
+        --coffee-dark: #4a2c2a;
+        --crust-gold: #e2a13c;
+        --crust-gold-dark: #c57f2e;
+        --warm-brown: #7a4b3a;
+        --text-dark: #2c1a10;
+        --text-soft: #6b4f3a;
+        --card-white: #ffffff;
+        --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 20px 30px -12px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 25px 40px -12px rgba(0, 0, 0, 0.15);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text-dark);
+        overflow-x: hidden;
+      }
+
+      h1,
+      h2,
+      h3,
+      .logo,
+      .hero-badge {
+        font-family: "Playfair Display", serif;
+      }
+
+      /* Navigation */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(255, 250, 245, 0.94);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(74, 44, 42, 0.12);
+        transition: box-shadow 0.3s;
+      }
+      nav.scrolled {
+        box-shadow: 0 2px 18px rgba(0, 0, 0, 0.04);
+      }
+      .nav-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+      }
+      .logo {
+        font-size: 1.65rem;
+        font-weight: 700;
+        color: var(--coffee-dark);
+        letter-spacing: -0.3px;
+      }
+      .logo span {
+        color: var(--crust-gold);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+      .nav-links a {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-soft);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--crust-gold);
+      }
+      .nav-cta {
+        background: var(--crust-gold);
+        color: #2c1a10 !important;
+        padding: 0.5rem 1.5rem;
+        border-radius: 40px;
+        font-weight: 600;
+      }
+      .nav-cta:hover {
+        background: var(--crust-gold-dark);
+        color: white !important;
+      }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .hamburger span {
+        width: 24px;
+        height: 2px;
+        background: var(--coffee-dark);
+        border-radius: 2px;
+      }
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: var(--bg);
+        z-index: 99;
+        padding: 1.5rem 5%;
+        flex-direction: column;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(74, 44, 42, 0.1);
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu a {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-soft);
+        text-decoration: none;
+        padding: 0.5rem 0;
+      }
+
+      /* Hero Section */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 120px 5% 80px;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.55),
+          rgba(0, 0, 0, 0.3)
+        );
+        z-index: 1;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 650px;
+        color: white;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(226, 161, 60, 0.2);
+        backdrop-filter: blur(6px);
+        padding: 0.3rem 1.2rem;
+        border-radius: 40px;
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        font-weight: 500;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 6vw, 4.8rem);
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+      }
+      .hero p {
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        max-width: 520px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 0.85rem 2rem;
+        border-radius: 40px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+      .btn-primary {
+        background: var(--crust-gold);
+        color: var(--coffee-dark);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .btn-primary:hover {
+        background: var(--crust-gold-dark);
+        transform: translateY(-2px);
+        color: white;
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1.5px solid white;
+        color: white;
+        margin-left: 1rem;
+      }
+      .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+      }
+
+      /* Info Bar */
+      .info-bar {
+        background: var(--coffee-dark);
+        padding: 1rem 5%;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(255, 245, 235, 0.85);
+        font-size: 0.85rem;
+      }
+      .info-item strong {
+        color: var(--crust-gold);
+        font-weight: 600;
+      }
+
+      /* Sections */
+      section {
+        padding: 5rem 5%;
+      }
+      .section-alt {
+        background: var(--cream);
+      }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+      .section-head {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 3rem;
+      }
+      .eyebrow {
+        display: inline-block;
+        color: var(--crust-gold-dark);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 0.5rem;
+      }
+      .section-head h2 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-family: "Playfair Display", serif;
+        margin-bottom: 1rem;
+        color: var(--coffee-dark);
+      }
+      .section-head p {
+        color: var(--text-soft);
+      }
+
+      /* About Grid */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+      }
+      .about-img {
+        border-radius: 32px 80px 32px 80px;
+        overflow: hidden;
+        height: 400px;
+        box-shadow: var(--shadow-md);
+      }
+      .about-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .about-features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1.8rem;
+      }
+      .feature {
+        background: var(--card-white);
+        padding: 0.9rem;
+        border-radius: 20px;
+        text-align: center;
+        font-weight: 500;
+        box-shadow: var(--shadow-sm);
+        color: var(--warm-brown);
+        border: 1px solid rgba(226, 161, 60, 0.2);
+      }
+
+      /* Menu Grid */
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+      .menu-card {
+        background: var(--card-white);
+        border-radius: 28px;
+        overflow: hidden;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        box-shadow: var(--shadow-sm);
+      }
+      .menu-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+      }
+      .menu-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+      }
+      .menu-card-content {
+        padding: 1.3rem;
+      }
+      .menu-card h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        margin-bottom: 0.3rem;
+        color: var(--coffee-dark);
+      }
+      .menu-card p {
+        font-size: 0.85rem;
+        color: var(--text-soft);
+        line-height: 1.4;
+      }
+      .price {
+        display: inline-block;
+        margin-top: 0.8rem;
+        font-weight: 800;
+        color: var(--crust-gold-dark);
+        background: rgba(226, 161, 60, 0.1);
+        padding: 0.2rem 1rem;
+        border-radius: 30px;
+      }
+
+      /* Gallery Grid */
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .gallery-item {
+        border-radius: 24px;
+        overflow: hidden;
+        height: 260px;
+        box-shadow: var(--shadow-sm);
+      }
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      .gallery-item:hover img {
+        transform: scale(1.03);
+      }
+
+      /* Reviews (testimonials) */
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.8rem;
+      }
+      .testimonial-card {
+        background: var(--card-white);
+        padding: 1.8rem;
+        border-radius: 28px;
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        transition: all 0.2s;
+      }
+      .testimonial-card:hover {
+        box-shadow: var(--shadow-md);
+      }
+      .testimonial-card::before {
+        content: "“";
+        font-family: "Playfair Display", serif;
+        font-size: 4rem;
+        position: absolute;
+        top: -0.5rem;
+        left: 1rem;
+        color: rgba(226, 161, 60, 0.2);
+      }
+      .stars {
+        color: var(--crust-gold);
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+      }
+      .reviewer {
+        margin-top: 1rem;
+        font-weight: 600;
+        color: var(--coffee-dark);
+      }
+
+      /* Contact Section */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        background: var(--card-white);
+        border-radius: 32px;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+      }
+      .contact-info {
+        padding: 2rem 2rem;
+      }
+      .contact-detail {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.6rem 0;
+      }
+      .contact-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--cream);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: var(--crust-gold-dark);
+      }
+      .contact-map {
+        background: #f7ede2;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        text-align: center;
+      }
+      .rating-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #2e7d32;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 40px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      .whatsapp-float {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        background: #25d366;
+        color: #0a2b1a;
+        padding: 0.8rem 1.4rem;
+        border-radius: 60px;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        z-index: 90;
+        font-size: 0.9rem;
+      }
+      footer {
+        background: var(--coffee-dark);
+        text-align: center;
+        padding: 2rem;
+        color: rgba(255, 245, 235, 0.7);
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: 900px) {
+        .about-grid,
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+        .nav-links {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .hero {
+          text-align: center;
+        }
+        .hero p {
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+      @media (max-width: 600px) {
+        .btn-outline {
+          margin-left: 0;
+          margin-top: 0.8rem;
+        }
+        .hero-actions {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .info-bar {
+          gap: 1rem;
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="navbar">
+      <div class="nav-container">
+        <div class="logo">Hot Crust <span>Cafe</span></div>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#contact" class="nav-cta">Order Now</a></li>
+        </ul>
+        <button class="hamburger" id="hamburgerBtn">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <img
+        class="hero-bg"
+        src="https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1600"
+        alt="Hot Crust Cafe cozy interior"
+      />
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span>⭐ 4.6 (61+ reviews)</span> <span>• Alpha Mall, Ogudu</span>
+        </div>
+        <h1>Hot Crust<br />Cafe</h1>
+        <p>
+          Small but mighty — amazing waffles, stir-fried pasta, and legendary
+          Oreo milkshakes. Cozy vibes with AC on blast, perfect for chilling.
+        </p>
+        <div class="hero-actions">
+          <a href="#menu" class="btn btn-primary">See Menu →</a>
+          <a href="#contact" class="btn btn-outline">Visit Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Info Bar : Google Maps data -->
+    <div class="info-bar">
+      <div class="info-item">
+        📍 <strong>Alpha Mall, 117 Ogudu Rd, Ogudu, Lagos 100242</strong>
+      </div>
+      <div class="info-item">⏰ <strong>Open Daily</strong> · Closes 9 pm</div>
+      <div class="info-item">📞 <strong>0916 903 6334</strong></div>
+      <div class="info-item">💰 <strong>₦₦ · Cozy & affordable</strong></div>
+    </div>
+
+    <!-- About Section (incorporates real Google description) -->
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Our Story</div>
+          <h2>Small but Mighty</h2>
+          <p>Cozy space for 2–5 people, amazing service & atmosphere.</p>
+        </div>
+        <div class="about-grid">
+          <div class="about-img">
+            <img
+              src="https://images.pexels.com/photos/3607271/pexels-photo-3607271.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Hot Crust Cafe delicious food spread"
+            />
+          </div>
+          <div>
+            <p style="margin-bottom: 1rem">
+              Hot Crust Cafe is a hidden gem inside Alpha Mall, Ogudu. Though
+              the space is intimate (indoor ~20 guests, outdoor ~10), the food,
+              customer service, and atmosphere are absolutely top-notch. Our
+              chef is known for recommending the best dishes — from stir-fried
+              pasta to Chinese rice and crispy waffles.
+            </p>
+            <p style="margin-bottom: 1rem; color: var(--text-soft)">
+              Whether you’re here for a quick bite, a date, or chilling with
+              friends, Hot Crust Cafe delivers 10/10 vibes. Air conditioning on
+              blast keeps it fresh, and our famous Oreo milkshake keeps you
+              coming back.
+            </p>
+            <div class="about-features">
+              <div class="feature">🧇 Waffles & Milkshakes</div>
+              <div class="feature">🍛 Stir-fried Pasta</div>
+              <div class="feature">❄️ AC on blast</div>
+              <div class="feature">🚗 Dine-in/Takeaway/Delivery</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section (based on real highlights) -->
+    <section id="menu" class="section-alt">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Menu & Highlights</div>
+          <h2>What We’re Famous For</h2>
+          <p>From waffles to hearty bowls — made fresh daily.</p>
+        </div>
+        <div class="menu-grid">
+          <div class="menu-card">
+            <img
+              src="https://images.pexels.com/photos/4551832/pexels-photo-4551832.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Stir Fried Pasta"
+            />
+            <div class="menu-card-content">
+              <h3>Stir Fried Pasta</h3>
+              <p>
+                Wok-tossed pasta with veggies, chicken, and signature sauce — a
+                customer favorite, bold and satisfying.
+              </p>
+              <span class="price">₦6,500</span>
+            </div>
+          </div>
+          <div class="menu-card">
+            <img
+              src="https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Waffles & Oreo Milkshake"
+            />
+            <div class="menu-card-content">
+              <h3>Waffles + Oreo Milkshake</h3>
+              <p>
+                Golden crispy waffles paired with thick, creamy Oreo milkshake —
+                absolute perfection.
+              </p>
+              <span class="price">₦7,500</span>
+            </div>
+          </div>
+          <div class="menu-card">
+            <img
+              src="https://images.pexels.com/photos/1082343/pexels-photo-1082343.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Chinese Rice with large bowl"
+            />
+            <div class="menu-card-content">
+              <h3>Chinese Rice (Large Bowl)</h3>
+              <p>
+                Fragrant fried rice with mixed veggies, eggs, and your choice of
+                protein — generous portions.
+              </p>
+              <span class="price">₦8,200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section (vibes & food) -->
+    <section id="gallery">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Visual Feast</div>
+          <h2>Our Space & Bites</h2>
+          <p>Cozy corners, delicious plates, and good energy.</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img
+              src="https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Cafe seating area"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Delicious burger and fries"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://images.pexels.com/photos/258220/pexels-photo-258220.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Outdoor seating Alpha Mall"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://images.pexels.com/photos/1283219/pexels-photo-1283219.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Refreshing drinks"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews Section (real Google reviews text) -->
+    <section id="reviews" class="section-alt">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Real Words</div>
+          <h2>⭐ 4.6 · 61+ reviews</h2>
+          <p>What our guests say about Hot Crust Cafe</p>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p>
+              "Small but mighty, meaning space seems small but the food served,
+              customer service and atmosphere (AC on blast) was amazing.
+              Everything we had was close to 10/10 from waffles to Oreos
+              milkshake, stir fried rice, Chinese rice with large bowl."
+            </p>
+            <div class="reviewer">— Folake (Local Guide)</div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p>
+              "Cozy place for small groups of two to about five people. The
+              indoor space can take maybe 20 people, while the outdoor space can
+              take maybe 10 people. Great vibes, friendly staff."
+            </p>
+            <div class="reviewer">— Okiemute Omuta (Kheme)</div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p>
+              "This was my first time visiting. I had the most amazing time.
+              Customer service top-notch! The chef was really nice and polite.
+              He suggested menus which I ended up loving. I'll definitely be
+              going back."
+            </p>
+            <div class="reviewer">— Adesola Osota</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section (full Google Business data) -->
+    <section id="contact">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="eyebrow">📍 Get in touch</div>
+            <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem">
+              Hot Crust Cafe
+            </h2>
+            <div class="rating-badge">⭐ 4.6 · 61 Google reviews</div>
+            <div class="contact-detail">
+              <div class="contact-icon">🏬</div>
+              <div>
+                <strong>Alpha Mall, 117 Ogudu Rd</strong><br />Ogudu, Lagos
+                100242, Nigeria
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-icon">📞</div>
+              <div><strong>0916 903 6334</strong><br />Call / WhatsApp</div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-icon">⏰</div>
+              <div><strong>Open daily</strong><br />Closes 9 pm</div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-icon">🍽️</div>
+              <div>Dine-in · Takeaway · Delivery</div>
+            </div>
+            <a
+              href="https://wa.me/2349169036334?text=Hello%20Hot%20Crust%20Cafe!%20I'd%20like%20to%20order%20or%20book%20a%20table."
+              class="btn btn-primary"
+              style="display: inline-block; margin-top: 1rem"
+              target="_blank"
+              >📲 Order via WhatsApp</a
+            >
+          </div>
+          <div class="contact-map">
+            <div style="font-size: 3rem">🧇</div>
+            <h3 style="margin: 0.5rem 0">Hot Crust Cafe</h3>
+            <p>Alpha Mall, 117 Ogudu Rd, Ogudu, Lagos</p>
+            <p style="font-size: 0.8rem; margin-top: 4px">
+              📍 Located inside Alpha Mall
+            </p>
+            <a
+              href="https://maps.google.com/?q=Alpha+Mall+117+Ogudu+Rd+Ogudu+Lagos"
+              target="_blank"
+              class="btn btn-primary"
+              style="background: var(--warm-brown); margin-top: 1rem"
+              >🗺️ Get Directions</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating WhatsApp (real number) -->
+    <a
+      href="https://wa.me/2349169036334?text=Hello%20Hot%20Crust%20Cafe!%20I%20want%20to%20order%20or%20make%20an%20enquiry."
+      class="whatsapp-float"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      💬 Order on WhatsApp
+    </a>
+
+    <footer>
+      <p>
+        © 2026 Hot Crust Cafe — Alpha Mall, 117 Ogudu Rd, Ogudu, Lagos 100242
+        &nbsp;|&nbsp; ⭐ 4.6 ★ Cozy • Waffles • Chill spot
+      </p>
+    </footer>
+
+    <script>
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 20);
+      });
+
+      const hamburger = document.getElementById("hamburgerBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () =>
+            mobileMenu.classList.remove("open"),
+          );
+        });
+      }
+
+      // Smooth scroll for CTA buttons
+      document
+        .querySelectorAll(".btn-primary, .btn-outline, .nav-cta")
+        .forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            const targetId = btn.getAttribute("href");
+            if (targetId && targetId.startsWith("#")) {
+              e.preventDefault();
+              const target = document.querySelector(targetId);
+              if (target) target.scrollIntoView({ behavior: "smooth" });
+            }
+          });
+        });
+    </script>
+  </body>
+</html>
